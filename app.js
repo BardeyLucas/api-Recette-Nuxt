@@ -85,7 +85,10 @@ app.get('/help', (req, res) => {
             'POST /api/users/login': 'Login and get JWT token (returns token in response)',
             'GET /api/users/profile': 'Get user profile (requires auth)',
             'GET /api/users/favorites': 'Get favorite recipes (requires auth)',
-            'POST /api/users/favorites/:recipeId': 'Add to favorites (requires auth)'
+            'POST /api/users/favorites/:recipeId': 'Add to favorites (requires auth)',
+            'GET /api/users': 'Get all users',
+            'GET /api/users/:id': 'Get user by ID',
+
         },
         contact: {
             developer: 'Recipe Website API Student Project',
@@ -106,6 +109,7 @@ app.use('*', (req, res) => {
             'GET /',
             'GET /help',
             'GET /api/recipes',
+            'GET /api/users',
             'GET /api/goals',
             'GET /api/cuisines',
             'GET /api/diets',
