@@ -86,7 +86,8 @@ Or create `.env` manually with this content:
 NODE_ENV=development
 PORT=3000
 DATABASE_PATH=./database/recettes.db
-SESSION_SECRET=your-secret-key-change-in-production
+JWT_SECRET=your-secret-key-change-in-production
+JWT_EXPIRES_IN=7d
 ```
 
 **Important:** Never commit `.env` to Git (it's in `.gitignore`)
@@ -102,7 +103,7 @@ npm install
 - express (web framework)
 - sqlite3 (database)
 - bcryptjs (password hashing)
-- express-session (session management)
+- jsonwebtoken (JWT token generation and verification)
 - dotenv (environment variables)
 
 **Wait for completion** - you should see:
@@ -258,8 +259,8 @@ You should see JSON output with API information.
 - `GET /api/ingredients/:id` - Get ingredient by ID
 
 **Users**
-- `POST /api/users/register` - Register new user
-- `POST /api/users/login` - Login user
+- `POST /api/users/register` - Register new user (returns JWT token)
+- `POST /api/users/login` - Login user (returns JWT token)
 - `GET /api/users` - Get all users (for testing)
 
 ### Protected Endpoints (Authentication Required)
@@ -302,12 +303,13 @@ You should see JSON output with API information.
 
 ## Important Notes
 
-### Session-Based Authentication
+### JWT Token-Based Authentication
 
-- This API uses **session cookies**, not JWT tokens
-- After login, session cookie is automatically sent with requests
-- Session lasts 24 hours
-- Logout destroys the session
+- This API uses **JWT (JSON Web Tokens)** for authentication
+- After login/register, a JWT token is returned in the response
+- Include the token in the `Authorization` header: `Bearer <token>`
+- Token expiration is configurable via `JWT_EXPIRES_IN` (default: 7 days)
+- Logout is handled client-side by removing the token from storage
 
 ### Admin Users
 
@@ -321,6 +323,3 @@ You should see JSON output with API information.
 - Located at `database/recettes.db`
 - Can be deleted and recreated anytime
 - No separate database server needed
-
-
-
